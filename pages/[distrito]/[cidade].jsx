@@ -11,7 +11,10 @@ export default function Cidade({ response }) {
 }
 
 export const getStaticProps = async ({params}) => {
-  const { data } = await axios.get(`http://localhost:3000/api/distritos/${params.distrito}/${params.cidade}`);
+  let dev = process.env.NODE_ENV !== 'production';
+  const DEV_URL = process.env.NEXT_PUBLIC_URL_LOCAL
+  const PROD_URL = process.env.NEXT_PUBLIC_URL_PROD
+  const { data } = await axios.get(`${dev ? DEV_URL : PROD_URL}/api/distritos/${params.distrito}/${params.cidade}`);
   const response = data;
   return {
     props: {
@@ -21,7 +24,10 @@ export const getStaticProps = async ({params}) => {
 };
 
 export const getStaticPaths = async () => {
-  const { data } = await axios.get(`http://localhost:3000/api/distritos`);
+  let dev = process.env.NODE_ENV !== 'production';
+  const DEV_URL = process.env.NEXT_PUBLIC_URL_LOCAL
+  const PROD_URL = process.env.NEXT_PUBLIC_URL_PROD
+  const { data } = await axios.get(`${dev ? DEV_URL : PROD_URL}/api/distritos`);
   const paths = data.map((distrito) => {
     return(
       distrito.cidades.map((item) => {
