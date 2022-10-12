@@ -8,7 +8,7 @@ export default function LayoutDefault({ title, header = true, footer = true, chi
     <>
       <HeadDefault title={title} />
       { header && <Header distritos={dataDistritos} /> }
-      <main>{children}</main>
+      <main style={{marginTop: "200px" }}>{children}</main>
       { footer && <Footer /> }
       <ScriptsDefault />
     </>

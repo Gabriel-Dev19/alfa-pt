@@ -1,14 +1,28 @@
 import axios from 'axios'
 import { formattedKebabCase } from '../../helpers/fonts';
 import LayoutDefault from "../../layouts/LayoutDefault";
+import { useRouter } from 'next/router';
 
 export default function Distritos({ response, responseListDistritos }) {
+
+  const router = useRouter()
+
   return(
     <LayoutDefault title={formattedKebabCase(response.distrito)} dataDistritos={responseListDistritos}>
       <div>
         Distrito: {response.distrito}
         <br />
         Nome: {response.name}
+        <br />
+        <ul>
+          {response.cidades.map((item, index) => (
+            <li key={index}>
+              <a href={`${router.query.distrito}/${item.cidade}`}>
+                {item.name}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </LayoutDefault>
   )
