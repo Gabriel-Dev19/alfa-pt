@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Collapse } from "react-collapse";
-import { distritos } from "../pages/api/data";
 
-export default function Header() {
+export default function Header({ distritos = [] }) {
   const [showLocalidades, setShowLocalidades] = useState(false);
   const [showNav, setShowNav] = useState(true);
   const [onScroll, setOnScroll] = useState(false);
@@ -38,9 +37,9 @@ export default function Header() {
         <button className="btn p-0 btn-toggle-nav d-lg-none" onClick={() => setShowNav(!showNav)}>
           <ion-icon name="menu-outline" />
         </button>
-        <div className="col-12 col-lg-auto menu">
+        <div className="col-12 col-lg-auto">
           <Collapse isOpened={showNav}>
-            <ul>
+            <ul className="menu">
               <li>
                 <Link href={'/'}>
                   <a title="alguma coisa">
@@ -56,30 +55,29 @@ export default function Header() {
                 </Link>
               </li>
               <li>
-                <div className="localidades">
-                  <Link href={'/'}>
-                      <a title="alguma coisa"
-                      onMouseEnter={() => setShowLocalidades(!showLocalidades)}
-                      onMouseLeave={() => setShowLocalidades(false)}>
-                        Localidades
-                        <div className="collapseAtivo">
-                          <Collapse isOpened={showLocalidades}>
-                            <ul>
-                              {distritos.map(item => (
-                                <li>
-                                  <Link href={`http://localhost:3000/${item.distrito}`}>
-                                    <a title={item.text}>
-                                      {item.name}
-                                    </a>
-                                  </Link>
-                                </li>
-                              ))}
-                            </ul>
-                          </Collapse>
-                        </div>
-                      </a>
-                  </Link>
-                </div>
+                <div
+                  className="localidades"
+                  onMouseEnter={() => { window.innerWidth > breakpointDesktop && setShowLocalidades(true)}}
+                  onClick={() => { window.innerWidth < breakpointDesktop && setShowLocalidades(!showLocalidades)}}
+                  onMouseLeave={() =>  setShowLocalidades(false)}
+                >
+                    Localidades
+                    <div className="collapseAtivo">
+                      <Collapse isOpened={showLocalidades}>
+                        <ul>
+                          {distritos.map((item, index) => (
+                            <li key={index}>
+                              <Link href={`http://localhost:3000/${item.distrito}`}>
+                                <a title={item.text}>
+                                  {item.name}
+                                </a>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </Collapse>
+                    </div>
+                  </div>
               </li>
               <li>
                 <Link href={'/'}>

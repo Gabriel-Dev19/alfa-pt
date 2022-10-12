@@ -2,32 +2,31 @@ import axios from 'axios'
 import LayoutDefault from '../../layouts/LayoutDefault';
 import { formattedKebabCase } from '../../helpers/fonts'
 
-export default function Cidade({ response }) {
+export default function Cidade({ response, responseListDistritos }) {
   return(
-    <LayoutDefault title={formattedKebabCase(response.cidade)}>
+    <LayoutDefault title={formattedKebabCase(response.cidade)} dataDistritos={responseListDistritos}>
       Nome da cidade: {response.cidade}
     </LayoutDefault>
   )
 }
 
 export const getStaticProps = async ({params}) => {
-  let dev = process.env.NODE_ENV !== 'production';
   const DEV_URL = process.env.NEXT_PUBLIC_URL_LOCAL
-  const PROD_URL = process.env.NEXT_PUBLIC_URL_PROD
-  const { data } = await axios.get(`${dev ? DEV_URL : PROD_URL}/api/distritos/${params.distrito}/${params.cidade}`);
-  const response = data;
+  const dataCidade = await (await axios.get(`${DEV_URL}/api/distritos/${params.distrito}/${params.cidade}`)).data;
+  const dataDistritos = await (await axios.get(`${DEV_URL}/api/distritos`)).data;
+  const response = dataCidade;
+  const responseListDistritos = dataDistritos;
   return {
     props: {
       response,
+      responseListDistritos
     },
   };
 };
 
 export const getStaticPaths = async () => {
-  let dev = process.env.NODE_ENV !== 'production';
   const DEV_URL = process.env.NEXT_PUBLIC_URL_LOCAL
-  const PROD_URL = process.env.NEXT_PUBLIC_URL_PROD
-  const { data } = await axios.get(`${dev ? DEV_URL : PROD_URL}/api/distritos`);
+  const { data } = await axios.get(`${DEV_URL}/api/distritos`);
   const paths = data.map((distrito) => {
     return(
       distrito.cidades.map((item) => {
