@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Collapse } from "react-collapse";
+import { distritos } from "../pages/api/data";
 
 export default function Header() {
+  const [showLocalidades, setShowLocalidades] = useState(false);
   const [showNav, setShowNav] = useState(true);
   const [onScroll, setOnScroll] = useState(false);
   const breakpointDesktop = 991.95
@@ -36,41 +38,60 @@ export default function Header() {
         <button className="btn p-0 btn-toggle-nav d-lg-none" onClick={() => setShowNav(!showNav)}>
           <ion-icon name="menu-outline" />
         </button>
-        <div className="col-12 col-lg-auto">
+        <div className="col-12 col-lg-auto menu">
           <Collapse isOpened={showNav}>
             <ul>
               <li>
                 <Link href={'/'}>
                   <a title="alguma coisa">
-                    Exemplo
+                    Exemplo 1
                   </a>
                 </Link>
               </li>
               <li>
                 <Link href={'/'}>
                   <a title="alguma coisa">
-                    Exemplo
+                    Exemplo 2
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <div className="localidades">
+                  <Link href={'/'}>
+                      <a title="alguma coisa"
+                      onMouseEnter={() => setShowLocalidades(!showLocalidades)}
+                      onMouseLeave={() => setShowLocalidades(false)}>
+                        Localidades
+                        <div className="collapseAtivo">
+                          <Collapse isOpened={showLocalidades}>
+                            <ul>
+                              {distritos.map(item => (
+                                <li>
+                                  <Link href={`http://localhost:3000/${item.distrito}`}>
+                                    <a title={item.text}>
+                                      {item.name}
+                                    </a>
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </Collapse>
+                        </div>
+                      </a>
+                  </Link>
+                </div>
+              </li>
+              <li>
+                <Link href={'/'}>
+                  <a title="alguma coisa">
+                    Exemplo 4
                   </a>
                 </Link>
               </li>
               <li>
                 <Link href={'/'}>
                   <a title="alguma coisa">
-                    Exemplo
-                  </a>
-                </Link>
-              </li>
-              <li>
-                <Link href={'/'}>
-                  <a title="alguma coisa">
-                    Exemplo
-                  </a>
-                </Link>
-              </li>
-              <li>
-                <Link href={'/'}>
-                  <a title="alguma coisa">
-                    Exemplo
+                    Exemplo 5
                   </a>
                 </Link>
               </li>
